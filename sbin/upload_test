@@ -1,4 +1,4 @@
 #!/bin/bash
 
-curl --request POST "https://repo.servisofts.com/up/" \
+curl --request POST "https://repo.servisofts.com/up/test/" \
     -F 'README.md=@"./README.md"'
