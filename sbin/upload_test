@@ -1,0 +1,4 @@
+#!/bin/bash
+
+curl --request POST "https://repo.servisofts.com/up/" \
+    -F 'README.md=@"./README.md"'

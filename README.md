@@ -24,7 +24,20 @@ curl https://repo.servisofts.com/.test
 ### Descargar un archivo con cUrl?
 
 ```bash
-curl -o [file_destiny] https://repo.servisofts.com/[file_path]
+#    test.txt is saved directory filed
+#    '.test' is path to download on repo
+curl -o "./test.txt" https://repo.servisofts.com/'.test'
+
+```
+
+### Subir un archivo con cUrl?
+
+```bash
+#    /test/README.md is a directory and name final on repo
+#    @"./README.md"  is a local path file for upload  
+curl --request POST "https://repo.servisofts.com/up/" \
+    -F '/test/README.md=@"./README.md"'
+
 ```
 
 ## `Instalation`
@@ -37,7 +50,16 @@ curl -o [file_destiny] https://repo.servisofts.com/[file_path]
 
 ![Screen Shot 2022-12-01 at 07 11 14](https://user-images.githubusercontent.com/35882906/205038222-fc6b660d-558c-4e8b-832a-9d8e32a0a9f1.png)
 
+```bash
+#Start
+./sbin/start
 
+#Stop
+./sbin/stop
+
+#Restart
+./sbin/restart
+```
 
 
 

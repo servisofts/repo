@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "runing stop..."
+docker-compose --env-file ./config.properties down

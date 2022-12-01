@@ -1,8 +1,12 @@
 services:
   web:
-    image: nginx:latest
+    image: servisofts/repo
+    build: .
+    env_file:
+      - config.properties
     ports:
-      - 80:80
+      - ${PORT_REPO}:80
+      - ${PORT_UPLOAD}:8080
     volumes:
-      - ./www:/usr/share/nginx/html
       - ./conf.d:/etc/nginx/conf.d
+      - ${ROOT_FILE}:/repo
