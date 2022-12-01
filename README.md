@@ -30,6 +30,7 @@ curl -o "./test.txt" https://repo.servisofts.com/'.test'
 
 ```
 
+
 ### Subir un archivo con cUrl?
 
 ```bash
@@ -37,6 +38,15 @@ curl -o "./test.txt" https://repo.servisofts.com/'.test'
 #    @"./README.md"  is a local path file for upload  
 curl --request POST "https://repo.servisofts.com/up/" \
     -F '/test/README.md=@"./README.md"'
+
+```
+### Eliminar un archivo con cUrl?
+
+```bash
+#    /test/README.md is a directory and name final on repo
+#    rm  is command for remove file or folder
+curl --request POST "https://repo.servisofts.com/up/" \
+    -F '/test/README.md=rm'
 
 ```
 

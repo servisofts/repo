@@ -3,4 +3,3 @@
 DIR_PATH=$(dirname "$0")
 source "${DIR_PATH}/upload"
 source "${DIR_PATH}/delete"
-
