@@ -1,0 +1,8 @@
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./www:/usr/share/nginx/html
+      - ./conf.d:/etc/nginx/conf.d
