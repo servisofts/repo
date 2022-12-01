@@ -13,6 +13,7 @@ import ServerHttp.ServerHttp;
 import Servisofts.SConsole;
 
 public class App {
+    static final String CONFIG_PATH = "./config.properties";
     static final int PORT = SProperties.getInt("PORT_UPLOAD");
     static final String ROOT_FILE = SProperties.get("ROOT_FILE");
 

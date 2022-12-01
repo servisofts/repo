@@ -21,7 +21,7 @@ public class SProperties {
 
     public static Properties getInstance() {
         if (PROPS == null) {
-            PROPS = load("./config.properties");
+            PROPS = load(App.CONFIG_PATH);
         }
         return PROPS;
     }

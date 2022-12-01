@@ -30,22 +30,22 @@ public class Upload {
                 String path = path_and_name.replaceAll("[^/]+(?=$/|$)", "");
                 // (Quitamos todo antes de la ultima / y tambien la /)
                 String name = path_and_name.replaceAll(".+(?=/|/$).", "");
-                SConsole.log("Intentando subir archibo:",
-                        "\n\t", "path=", path,
-                        "\n\t", "name=", name,
-                        "\n\t", "size=", fi.getSize(),
+
+                SConsole.log(name, ":",
+                        // "\n\t", "path=", path,
+                        // "\n\t", "name=", name,
+                        "\t", "size=", fi.getSize(),
+                        "\t", "type=", fi.getContentType() == null ? "cmd:" + fi.getString() : fi.getContentType(),
+                        "\t", "path=", path_and_name,
                         "");
 
-                File f = new File(App.ROOT_FILE + "/" + path);
-                if (!f.exists()) {
-                    f.mkdirs();
+                if (!allowCommand(fi, path_and_name)) {
+                    // Si no es un comando guardamos
+                    crearDirectorios(path);
+                    guardarFile(fi, path_and_name);
+
                 }
-                f = new File(App.ROOT_FILE + "/" + path_and_name);
-                if (f.exists()) {
-                    // SConsole.warning("El archibo ya existe, sera remplazado", saved_path);
-                }
-                copyInputStreamToFile(fi.getInputStream(), f);
-                SConsole.succes("Archibo guardado con exito",path_and_name);
+
             }
             responseText(t, 200, "exito");
         } catch (Exception e) {
@@ -53,6 +53,48 @@ public class Upload {
             e.printStackTrace();
         }
         t.close();
+    }
+
+    private static boolean allowCommand(FileItem fi, String path_and_name) throws IOException {
+        if (fi.getContentType() == null) {
+            String cmd = fi.getString();
+            switch (cmd) {
+                case "rm":
+                    deleteFile(fi, path_and_name);
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private static void deleteFile(FileItem fi, String path) throws IOException {
+        File f = new File(App.ROOT_FILE + "/" + path);
+        if (path.equals("/")) {
+            SConsole.error("[", path, "]", "No se puede elimar /");
+            return;
+        }
+        if (f.exists()) {
+            f.delete();
+            SConsole.error("[", path, "]", "Eliminado");
+        }
+    }
+
+    private static void guardarFile(FileItem fi, String path) throws IOException {
+        File f = new File(App.ROOT_FILE + "/" + path);
+        boolean exist = f.exists();
+        copyInputStreamToFile(fi.getInputStream(), f);
+        if (exist) {
+            SConsole.warning("[", path, "]", "Remplazado");
+        } else {
+            SConsole.succes("[", path, "]", "Creado");
+        }
+    }
+
+    private static void crearDirectorios(String path) {
+        File f = new File(App.ROOT_FILE + "/" + path);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
     }
 
     private static void responseText(HttpExchange t, int code, String text) throws IOException {
