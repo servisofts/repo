@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "runing start..."
-docker-compose --env-file ./config.properties up --build
+docker-compose --env-file ./config.properties up
 

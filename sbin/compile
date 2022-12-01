@@ -1,0 +1,6 @@
+#!/bin/bash
+NAME=${PWD##*/}
+cd .. 
+tar -czvf "$NAME.tar.gz" ./repo 
+cd repo
+mv ../"$NAME.tar.gz" .
