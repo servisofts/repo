@@ -1,0 +1,32 @@
+#!/bin/bash
+
+JSON commands new
+
+JSON options new
+
+JSON options put "-h" "_help"
+
+_help() {
+    JSON help_info new
+    JSON help_info put "_help" "Muestra la ayuda."
+    shelp commands options help_info "ls"
+    exit 0
+}
+
+export_module commands options
+
+
+
+dir="${@:2}"
+
+url="$REPO_PATH$dir/"
+# sconsole -g "$url"
+lista=($(curl -s "$url" | grep 'href' | perl -nle 'm/.*?href="(.*)?".*/; print $1' | grep -v '\.\.'))
+# sconsole -g "${lista[*]}"
+for key in ${lista[@]}; do
+    name=${key%/}
+    # echo -e "$name=$url$key"
+    printf "$name\t\t"
+    # exit 0
+done
+echo ""

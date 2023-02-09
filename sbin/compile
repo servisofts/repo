@@ -1,6 +1,13 @@
 #!/bin/bash
+#
+#
+#
+VERSION="1.0.1"
+#
+#
+#
 NAME=${PWD##*/}
-cd .. 
-tar -czvf "$NAME.tar.gz" ./repo 
+cd ..
+tar -czvf "$NAME.tar.gz" ./repo
 cd repo
-mv ../"$NAME.tar.gz" .
+mv ../"$NAME-$VERSION.tgz" .

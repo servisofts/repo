@@ -9,6 +9,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.jboss.com.sun.net.httpserver.HttpExchange;
 
 import Servisofts.SConsole;
@@ -50,44 +51,82 @@ public class Upload {
             responseText(t, 200, "exito");
         } catch (Exception e) {
             responseText(t, 400, e.getMessage());
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         t.close();
     }
 
-    private static boolean allowCommand(FileItem fi, String path_and_name) throws IOException {
+    private static boolean allowCommand(FileItem fi, String path_and_name) throws Exception {
         if (fi.getContentType() == null) {
             String cmd = fi.getString();
             switch (cmd) {
                 case "rm":
-                    deleteFile(fi, path_and_name);
+                    rm(fi, path_and_name, false);
+                    return true;
+                case "rm-fr":
+                    rm(fi, path_and_name, true);
+                    return true;
+                case "mkdir":
+                    mkdir(fi, path_and_name);
                     return true;
             }
         }
         return false;
     }
 
-    private static void deleteFile(FileItem fi, String path) throws IOException {
+    private static void rm(FileItem fi, String path, boolean fr) throws Exception {
         File f = new File(App.ROOT_FILE + "/" + path);
-        if (path.equals("/")) {
-            SConsole.error("[", path, "]", "No se puede elimar /");
-            return;
+        if (path.equals("/") || path.equals(".") || !path.startsWith("/") || path.startsWith("/..")
+                || path.startsWith("/./") || path.startsWith("/*") || path.equals("/.")) {
+            throw new Exception("Permission denied");
         }
+        
         if (f.exists()) {
-            f.delete();
-            SConsole.error("[", path, "]", "Eliminado");
+            if (f.isDirectory()) {
+                if (fr) {
+                    FileUtils.deleteDirectory(f);
+                } else {
+                    throw new Exception("Permission denied, is a folder, try again with -fr");
+                }
+            } else {
+                f.delete();
+            }
+        } else {
+            throw new Exception("No such file or directory");
         }
     }
 
-    private static void guardarFile(FileItem fi, String path) throws IOException {
+    private static void mkdir(FileItem fi, String path) throws Exception {
+        File f = new File(App.ROOT_FILE + "/" + path);
+        if (path.equals("/")) {
+            throw new Exception("Permission denied");
+        }
+        if (f.exists()) {
+            throw new Exception("File exist");
+        }
+        f.mkdirs();
+    }
+
+    private static void guardarFile(FileItem fi, String path) throws Exception {
         File f = new File(App.ROOT_FILE + "/" + path);
         boolean exist = f.exists();
-        copyInputStreamToFile(fi.getInputStream(), f);
+
         if (exist) {
-            SConsole.warning("[", path, "]", "Remplazado");
+            if (f.isDirectory()) {
+                // SConsole.warning("[", path, "]", path + " (Is a directory)");
+                f = new File(App.ROOT_FILE + "/" + path + "/" + fi.getName());
+                copyInputStreamToFile(fi.getInputStream(), f);
+                // System.out.println(fi.getName());
+                return;
+                // throw new Exception(path + " (Is a directory)");
+            }
+            copyInputStreamToFile(fi.getInputStream(), f);
+            // SConsole.warning("[", path, "]", "Remplazado");
         } else {
-            SConsole.succes("[", path, "]", "Creado");
+            copyInputStreamToFile(fi.getInputStream(), f);
+            // SConsole.succes("[", path, "]", "Creado");
         }
+
     }
 
     private static void crearDirectorios(String path) {
