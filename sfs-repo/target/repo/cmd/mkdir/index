@@ -22,6 +22,7 @@ fi
 
 
 dir_from="${@:2}"
+dir_from3="${@:3}"
 # url="$REPO_PATH$dir"
 name_from=$(basename $dir_from)
 sconsole -g "name_from = $name_from"

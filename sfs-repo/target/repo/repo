@@ -8,6 +8,7 @@ JSON commands new
 JSON commands put "ls" "cmd/ls/index"
 JSON commands put "clone" "cmd/clone/index"
 JSON commands put "upload" "cmd/upload/index"
+JSON commands put "cp" "cmd/cp/index"
 JSON commands put "rm" "cmd/rm/index"
 JSON commands put "mkdir" "cmd/mkdir/index"
 # JSON commands put "test" "cmd/test/index"

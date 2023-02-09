@@ -19,8 +19,13 @@ export_module commands options
 
 dir="${@:2}"
 
-url="$REPO_PATH$dir/"
-# sconsole -g "$url"
+if [[ ! $dir =~ ^/ ]]; then
+    dir="/home/$USER/$dir"
+fi
+
+
+url="$REPO_PATH$dir"
+sconsole -g "$url"
 lista=($(curl -s "$url" | grep 'href' | perl -nle 'm/.*?href="(.*)?".*/; print $1' | grep -v '\.\.'))
 # sconsole -g "${lista[*]}"
 for key in ${lista[@]}; do

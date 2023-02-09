@@ -1,5 +1,6 @@
 # sfs
-
+Ete proyecto es un shel script que nos permite manejar facil el repositorio.
+Utiliza el shell-framework-servisofts
 
 1. Download repository from `https://github.com/servisofts/repo`;
 2. Verificar la ayuda.
