@@ -67,8 +67,6 @@ curl --request POST "https://repo.servisofts.com/up/" \
 
 #Restart
 ./sbin/restart
-#Compile
-./sbin/compile
 ```
 
 

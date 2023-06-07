@@ -1,0 +1,7 @@
+VERSION=1.0.1
+
+# REPO_PATH require / on end
+# REPO_PATH="https://repo.servisofts.com/"
+# REPO_UPLOAD_PATH="https://repo.servisofts.com/up/"
+REPO_PATH="http://localhost/"
+REPO_UPLOAD_PATH="http://localhost:8080/"

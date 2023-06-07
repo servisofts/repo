@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#[WARNING] Import sfs only in first page.
+source "sfs"
+
+JSON commands new
+
+JSON commands put "ls" "cmd/ls/index"
+JSON commands put "clone" "cmd/clone/index"
+JSON commands put "upload" "cmd/upload/index"
+JSON commands put "rm" "cmd/rm/index"
+JSON commands put "mkdir" "cmd/mkdir/index"
+JSON commands put "test" "cmd/test/index"
+
+JSON options new
+
+JSON options put "-h" "_help"
+JSON options put "--help" "_help"
+
+JSON options put "-v" "_version"
+JSON options put "--version" "_version_large"
+
+JSON options put "-i" "_info"
+
+_help() {
+    JSON help_info new
+    JSON help_info put "cmd/ls/index" "Lista los archivos del directorio"
+    JSON help_info put "cmd/test/index" "Testing"
+
+    JSON help_info put "_help" "Muestra la ayuda."
+    JSON help_info put "_version" "Muestra la version de srepo."
+    JSON help_info put "_version_large" "Muestra la version detallada de srepo."
+    JSON help_info put "_info" "Muestra la informacion del repositorio."
+
+    shelp commands options help_info ""
+    exit 0
+}
+_version() {
+    sconsole "$VERSION"
+    exit 0
+}
+_version_large() {
+    sconsole "$NAME version $VERSION"
+    sfs --version
+    exit 0
+}
+
+_info() {
+    sconsole "INFORMACION DEL REPO"
+    sconsole "$REPO_PATH"
+    exit 0
+}
+
+export_module commands options
+
+_help
